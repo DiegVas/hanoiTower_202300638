@@ -7,6 +7,7 @@ import Modal from "react-modal";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [diskValue, setDiskValue] = useState();
 
   const [moveCount, setMoveCount] = useState(0);
   const [dragId, setDragId] = useState();
@@ -84,6 +85,19 @@ export default function HomePage() {
     setTiles(newTileState);
   };
 
+  const setNewDisk = () => {
+    const newTiles = [];
+    for (let i = 1; i <= diskValue; i++) {
+      newTiles.push({
+        id: `Tile-${i}`,
+        column: 1,
+        row: i,
+        width: i * 2,
+      });
+    }
+    setTiles(newTiles);
+  };
+
   const column1Tiles = tiles.filter((tile) => tile.column === 1);
   const column2Tiles = tiles.filter((tile) => tile.column === 2);
   const column3Tiles = tiles.filter((tile) => tile.column === 3);
@@ -93,7 +107,7 @@ export default function HomePage() {
     <>
       <div className="App">
         <h1 className="title">Torre de Hanoi</h1>
-        <Header />
+        <Header openModal={() => setIsModalOpen(true)} reset={setNewDisk} setMoveCount={setMoveCount} />
         <div className="GameBody">
           <span>
             <strong>Move count: </strong>
@@ -123,8 +137,24 @@ export default function HomePage() {
         className="TileInput"
       >
         <h2>¿Cuantos discos deseas?</h2>
-        <form className="form" onSubmit={() => setIsModalOpen(false)}>
-          <input type="number" id="numberInput" className="form-input" min="3" max="5" required />
+        <form
+          className="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setNewDisk();
+            setIsModalOpen(false);
+          }}
+        >
+          <input
+            type="number"
+            id="numberInput"
+            className="form-input"
+            min="3"
+            max="7"
+            value={diskValue}
+            onChange={(e) => setDiskValue(e.target.value)}
+            required
+          />
           <button type="submit" className="form-button">
             Iniciar
           </button>
