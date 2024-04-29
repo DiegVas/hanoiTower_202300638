@@ -1,0 +1,34 @@
+.content {
+  display: inline-flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 1%;
+}
+
+.column-container {
+  align-items: flex-end;
+  border: 1px solid #b67352;
+  height: 70vh;
+  position: relative;
+  width: 30%;
+  z-index: 0 !important;
+}
+
+.center-bar {
+  background-color: #b67352;
+  width: 4%;
+  height: 100%;
+  border: 1px solid grey;
+  position: absolute;
+  left: 48%;
+  z-index: -1 !important;
+}
+
+.tile {
+  background-color: #ffc94a;
+  border: 1px solid black;
+  border-radius: 15px 15px 0px 0px;
+  height: 5%;
+  margin: auto;
+  z-index: 10;
+}
