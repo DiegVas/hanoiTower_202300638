@@ -7,48 +7,22 @@ import Modal from "react-modal";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [diskValue, setDiskValue] = useState();
+  const [diskValue, setDiskValue] = useState("");
 
   const [moveCount, setMoveCount] = useState(0);
   const [dragId, setDragId] = useState();
-  const [tiles, setTiles] = useState([
-    {
-      id: "Tile-1",
-      column: 1,
-      row: 1,
-      width: 2,
-    },
-    {
-      id: "Tile-2",
-      column: 1,
-      row: 2,
-      width: 4,
-    },
-    {
-      id: "Tile-3",
-      column: 1,
-      row: 3,
-      width: 6,
-    },
-    {
-      id: "Tile-4",
-      column: 1,
-      row: 4,
-      width: 8,
-    },
-    {
-      id: "Tile-5",
-      column: 1,
-      row: 5,
-      width: 10,
-    },
-    {
-      id: "Tile-6",
-      column: 1,
-      row: 6,
-      width: 12,
-    },
-  ]);
+  const [tiles, setTiles] = useState([]);
+
+  const [isSolutionModalOpen, setIsSolutionModalOpen] = useState(false);
+
+  const solvePuzzle = (n, origin = 1, destination = 3, temporary = 2, moves = []) => {
+    n = Number(n);
+    if (n === 0) return moves;
+    solvePuzzle(n - 1, origin, temporary, destination, moves);
+    moves.push(`El disco número ${n} se mueve de la pila ${origin} a la pila ${destination}.`);
+    solvePuzzle(n - 1, temporary, destination, origin, moves);
+    return moves;
+  };
 
   const handleDrag = (ev) => {
     const dragTile = tiles.find((tile) => tile.id === ev.currentTarget.id);
@@ -101,13 +75,18 @@ export default function HomePage() {
   const column1Tiles = tiles.filter((tile) => tile.column === 1);
   const column2Tiles = tiles.filter((tile) => tile.column === 2);
   const column3Tiles = tiles.filter((tile) => tile.column === 3);
-  const winCondition = tiles.every((tile) => tile.column === 3);
+  const winCondition = tiles.every((tile) => tile.column === 3) && tiles.length > 0;
 
   return (
     <>
       <div className="App">
         <h1 className="title">Torre de Hanoi</h1>
-        <Header openModal={() => setIsModalOpen(true)} reset={setNewDisk} setMoveCount={setMoveCount} />
+        <Header
+          openModal={() => setIsModalOpen(true)}
+          reset={setNewDisk}
+          setMoveCount={setMoveCount}
+          openSolutionModal={setIsSolutionModalOpen}
+        />
         <div className="GameBody">
           <span>
             <strong>Move count: </strong>
@@ -159,6 +138,15 @@ export default function HomePage() {
             Iniciar
           </button>
         </form>
+      </Modal>
+
+      <Modal isOpen={isSolutionModalOpen} onRequestClose={() => setIsSolutionModalOpen(false)} className="TileSolution">
+        <h2>Solución</h2>
+        <ol>
+          {solvePuzzle(Number(diskValue), 1, 3, 2).map((move, index) => (
+            <li key={index}>{move}</li>
+          ))}
+        </ol>
       </Modal>
     </>
   );

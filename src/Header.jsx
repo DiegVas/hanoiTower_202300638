@@ -1,6 +1,6 @@
 import "./Styles/Header.css";
 
-export default function Header({ openModal, reset, setMoveCount }) {
+export default function Header({ openModal, reset, setMoveCount, openSolutionModal }) {
   return (
     <nav className="Header">
       <button
@@ -12,7 +12,13 @@ export default function Header({ openModal, reset, setMoveCount }) {
         Reiniciar
       </button>
       <button onClick={openModal}>Nivel</button>
-      <button>Mostrar solucion</button>
+      <button
+        onClick={() => {
+          openSolutionModal(true);
+        }}
+      >
+        Mostrar solucion
+      </button>
     </nav>
   );
 }
