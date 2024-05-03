@@ -89,7 +89,7 @@ export default function HomePage() {
         />
         <div className="GameBody">
           <span>
-            <strong>Move count: </strong>
+            <strong>Movimientos: </strong>
             {moveCount}
           </span>
           <GameBody
@@ -128,7 +128,7 @@ export default function HomePage() {
             type="number"
             id="numberInput"
             className="form-input"
-            min="3"
+            min="1"
             max="7"
             value={diskValue}
             onChange={(e) => setDiskValue(e.target.value)}
